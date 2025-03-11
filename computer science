@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Math Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 30px;
+    }
+    #title {
+      cursor: pointer;
+      color: blue;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    input[type="text"] {
+      font-size: 16px;
+      padding: 5px;
+      width: 150px;
+    }
+    pre {
+      text-align: left;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Clickable title that resets the quiz -->
+  <h1 id="title">Math Quiz</h1>
+
+  <!-- Main Menu Section -->
+  <div id="menu" class="section">
+    <p>Select a challenge:</p>
+    <button onclick="startQuiz(1)">Addition</button>
+    <button onclick="startQuiz(2)">Subtraction</button>
+    <button onclick="startQuiz(3)">Multiplication</button>
+    <button onclick="startQuiz(4)">Division</button>
+    <button onclick="exitQuiz()">Exit</button>
+  </div>
+
+  <!-- Quiz Section -->
+  <div id="quiz" class="section" style="display:none;">
+    <p id="problemText"></p>
+    <input type="text" id="userAnswer" placeholder="Your answer">
+    <br>
+    <button onclick="submitAnswer()">Submit Answer</button>
+    <p id="feedback"></p>
+    <button onclick="nextProblem()">Next Problem</button>
+    <button onclick="backToMenu()">Back to Menu</button>
+  </div>
+
+  <!-- Final Results Section -->
+  <div id="results" class="section" style="display:none;">
+    <h2>Final Results</h2>
+    <pre id="resultsText"></pre>
+    <button onclick="resetQuiz()">Reset Quiz</button>
+    <button onclick="backToMenu()">Back to Menu</button>
+  </div>
+
+  <script>
+    // Global variables similar to your Python code
+    let currentOperation = 0;
+    let currentSolution = 0;
+    let total = 0;
+    let count = 0;
+
+    // When the title is clicked, go back to the main menu.
+    document.getElementById("title").addEventListener("click", backToMenu);
+
+    // This function mimics your get_problem() function.
+    function getProblem(operation) {
+      let num1 = Math.floor(Math.random() * 20) + 1;
+      let num2 = Math.floor(Math.random() * 20) + 1;
+      let problem = "";
+      let solution = 0;
+      
+      if (operation === 1) { // Addition
+        problem = `${num1} + ${num2}`;
+        solution = num1 + num2;
+      } else if (operation === 2) { // Subtraction
+        problem = `${num1} - ${num2}`;
+        solution = num1 - num2;
+      } else if (operation === 3) { // Multiplication
+        problem = `${num1} * ${num2}`;
+        solution = num1 * num2;
+      } else if (operation === 4) { // Division
+        // To keep it simple, we use a new num2 and let division result in a float.
+        num2 = Math.floor(Math.random() * 20) + 1;
+        problem = `${num1} / ${num2}`;
+        solution = parseFloat((num1 / num2).toFixed(2));
+      }
+      return { problem, solution };
+    }
+
+    // Start the quiz for a selected operation.
+    function startQuiz(operation) {
+      currentOperation = operation;
+      document.getElementById("menu").style.display = "none";
+      document.getElementById("results").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      nextProblem();
+    }
+
+    // Generate and display the next problem.
+    function nextProblem() {
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("userAnswer").value = "";
+      let prob = getProblem(currentOperation);
+      currentSolution = prob.solution;
+      document.getElementById("problemText").innerText = "Solve: " + prob.problem;
+    }
+
+    // Check the user's answer, similar to get_usersolution() and answer checking in your code.
+    function submitAnswer() {
+      let answerStr = document.getElementById("userAnswer").value;
+      if (answerStr.trim() === "") {
+        document.getElementById("feedback").innerText = "Please enter an answer.";
+        return;
+      }
+      let userAnswer = Number(answerStr);
+      total++;
+      if (userAnswer === currentSolution) {
+        count++;
+        document.getElementById("feedback").innerText = "Correct!";
+      } else {
+        document.getElementById("feedback").innerText = "Incorrect! The correct answer was " + currentSolution + ".";
+      }
+    }
+
+    // Return to the main menu.
+    function backToMenu() {
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("results").style.display = "none";
+      document.getElementById("menu").style.display = "block";
+    }
+
+		    // Exit the quiz and show final results (like when option 5 is chosen).
+		    function exitQuiz() {
+		      document.getElementById("menu").style.display = "none";
+      document.getElementById("quiz").style.display = "none";
+      displayResults();
+    }
+
+    // Display final results.
+    function displayResults() {
+      document.getElementById("resultsText").innerText =
+        "Total questions asked: " + total +
+        "\nCorrect answers: " + count +
+	        "\nPercentage correct: " + (total > 0 ? ((count / total) * 100).toFixed(1) + "%" : "0%");
+      document.getElementById("results").style.display = "block";
+    }
+
+    // Reset the quiz scores.
+    function resetQuiz() {
+      total = 0;
+      count = 0;
+      backToMenu();
+    }
+  </script>
+</body>
+</html>
