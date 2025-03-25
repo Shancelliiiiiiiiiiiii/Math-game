@@ -33,10 +33,10 @@
   </style>
 </head>
 <body>
-  <!-- Clickable title that resets the quiz -->
+
   <h1 id="title">Math Quiz</h1>
 
-  <!-- Main Menu Section -->
+
   <div id="menu" class="section">
     <p>Select a challenge:</p>
     <button onclick="startQuiz(1)">Addition</button>
@@ -46,7 +46,7 @@
     <button onclick="exitQuiz()">Exit</button>
   </div>
 
-  <!-- Quiz Section -->
+
   <div id="quiz" class="section" style="display:none;">
     <p id="problemText"></p>
     <input type="text" id="userAnswer" placeholder="Your answer">
@@ -57,7 +57,7 @@
     <button onclick="backToMenu()">Back to Menu</button>
   </div>
 
-  <!-- Final Results Section -->
+
   <div id="results" class="section" style="display:none;">
     <h2>Final Results</h2>
     <pre id="resultsText"></pre>
@@ -66,33 +66,33 @@
   </div>
 
   <script>
-    // Global variables similar to your Python code
+   
     let currentOperation = 0;
     let currentSolution = 0;
     let total = 0;
     let count = 0;
 
-    // When the title is clicked, go back to the main menu.
+
     document.getElementById("title").addEventListener("click", backToMenu);
 
-    // This function mimics your get_problem() function.
+
     function getProblem(operation) {
       let num1 = Math.floor(Math.random() * 20) + 1;
       let num2 = Math.floor(Math.random() * 20) + 1;
       let problem = "";
       let solution = 0;
       
-      if (operation === 1) { // Addition
+      if (operation === 1) { 
         problem = `${num1} + ${num2}`;
         solution = num1 + num2;
-      } else if (operation === 2) { // Subtraction
+      } else if (operation === 2) { 
         problem = `${num1} - ${num2}`;
         solution = num1 - num2;
-      } else if (operation === 3) { // Multiplication
+      } else if (operation === 3) { 
         problem = `${num1} * ${num2}`;
         solution = num1 * num2;
-      } else if (operation === 4) { // Division
-        // To keep it simple, we use a new num2 and let division result in a float.
+      } else if (operation === 4) { 
+
         num2 = Math.floor(Math.random() * 20) + 1;
         problem = `${num1} / ${num2}`;
         solution = parseFloat((num1 / num2).toFixed(2));
@@ -100,7 +100,7 @@
       return { problem, solution };
     }
 
-    // Start the quiz for a selected operation.
+ 
     function startQuiz(operation) {
       currentOperation = operation;
       document.getElementById("menu").style.display = "none";
@@ -109,7 +109,7 @@
       nextProblem();
     }
 
-    // Generate and display the next problem.
+
     function nextProblem() {
       document.getElementById("feedback").innerText = "";
       document.getElementById("userAnswer").value = "";
@@ -118,7 +118,7 @@
       document.getElementById("problemText").innerText = "Solve: " + prob.problem;
     }
 
-    // Check the user's answer, similar to get_usersolution() and answer checking in your code.
+  
     function submitAnswer() {
       let answerStr = document.getElementById("userAnswer").value;
       if (answerStr.trim() === "") {
@@ -135,21 +135,21 @@
       }
     }
 
-    // Return to the main menu.
+  
     function backToMenu() {
       document.getElementById("quiz").style.display = "none";
       document.getElementById("results").style.display = "none";
       document.getElementById("menu").style.display = "block";
     }
 
-		    // Exit the quiz and show final results (like when option 5 is chosen).
+		 
 		    function exitQuiz() {
 		      document.getElementById("menu").style.display = "none";
       document.getElementById("quiz").style.display = "none";
       displayResults();
     }
 
-    // Display final results.
+
     function displayResults() {
       document.getElementById("resultsText").innerText =
         "Total questions asked: " + total +
@@ -158,7 +158,7 @@
       document.getElementById("results").style.display = "block";
     }
 
-    // Reset the quiz scores.
+   
     function resetQuiz() {
       total = 0;
       count = 0;
